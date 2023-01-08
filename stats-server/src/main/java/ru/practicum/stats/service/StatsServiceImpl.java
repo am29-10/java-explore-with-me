@@ -30,7 +30,6 @@ public class StatsServiceImpl implements StatsService {
     public List<ViewStats> getStats(String start, String end, List<String> uris, Boolean unique) {
         LocalDateTime startStat;
         LocalDateTime endStat;
-        String app = "ewm-service";
         List<ViewStats> views = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -40,27 +39,25 @@ public class StatsServiceImpl implements StatsService {
         List<EndpointHit> endpointHits = endpointHitRepository.findAllByTimestampBetweenAndUriIn(startStat, endStat, uris);
         Long hits = (long) endpointHits.size();
         List<EndpointHit> endpointHits1 = endpointHitRepository.findDistinctByTimestampBetweenAndUriIn(startStat, endStat, uris);
-        Long hits1 = (long) endpointHits1.size();
+        Long hitsDistinct = (long) endpointHits1.size();
 
         if (unique) {
-            for (String uri : uris) {
-                ViewStats viewStats = ViewStats.builder()
-                        .app(app)
-                        .uri(uri)
-                        .hits(hits1)
-                        .build();
-                views.add(viewStats);
-            }
+            addViewStatsByHits(views, uris, hitsDistinct);
         } else {
-            for (String uri : uris) {
-                ViewStats viewStats = ViewStats.builder()
-                        .app(app)
-                        .uri(uri)
-                        .hits(hits)
-                        .build();
-                views.add(viewStats);
-            }
+            addViewStatsByHits(views, uris, hits);
         }
         return views;
+    }
+
+    private void addViewStatsByHits(List<ViewStats> views, List<String> uris, Long hits) {
+        for (String uri : uris) {
+            String app = "ewm-service";
+            ViewStats viewStats = ViewStats.builder()
+                    .app(app)
+                    .uri(uri)
+                    .hits(hits)
+                    .build();
+            views.add(viewStats);
+        }
     }
 }

@@ -41,3 +41,5 @@
 <p align="center">
   <img src="images/ewm%20db.png">
 </p>
+
+Ссылка на pull request: https://github.com/am29-10/java-explore-with-me/pull/2

@@ -30,7 +30,6 @@ public class StatsServiceImpl implements StatsService {
     public List<ViewStats> getStats(String start, String end, List<String> uris, Boolean unique) {
         LocalDateTime startStat;
         LocalDateTime endStat;
-        List<ViewStats> views = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         startStat = LocalDateTime.parse(URLDecoder.decode(start, StandardCharsets.UTF_8), formatter);
@@ -42,14 +41,14 @@ public class StatsServiceImpl implements StatsService {
         Long hitsDistinct = (long) endpointHits1.size();
 
         if (unique) {
-            addViewStatsByHits(views, uris, hitsDistinct);
+            return addViewStatsByHits(uris, hitsDistinct);
         } else {
-            addViewStatsByHits(views, uris, hits);
+            return addViewStatsByHits(uris, hits);
         }
-        return views;
     }
 
-    private void addViewStatsByHits(List<ViewStats> views, List<String> uris, Long hits) {
+    private List<ViewStats> addViewStatsByHits(List<String> uris, Long hits) {
+        List<ViewStats> views = new ArrayList<>();
         for (String uri : uris) {
             String app = "ewm-service";
             ViewStats viewStats = ViewStats.builder()
@@ -59,5 +58,6 @@ public class StatsServiceImpl implements StatsService {
                     .build();
             views.add(viewStats);
         }
+        return views;
     }
 }

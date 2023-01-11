@@ -38,6 +38,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @AllArgsConstructor
+@Transactional
 public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
@@ -48,7 +49,6 @@ public class EventServiceImpl implements EventService {
 
     // Private
     @Override
-    @Transactional
     public EventFullDto create(Long userId, Event event) {
         User initiator = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(String.format(
                 "Пользователь с id = %d не может организовать событие, т.к он отсутствует в базе", userId)));
@@ -71,7 +71,6 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    @Transactional
     public EventFullDto update(Long userId, Event event) {
         userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(String.format(
                 "Событие не может быть обновлено, т.к. пользователь с id = %d отсутствует в базе", userId)));
@@ -126,7 +125,6 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    @Transactional
     public List<EventShortDto> getAllByUserId(Long userId, Integer from, Integer size) {
         userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(String.format(
                 "Список событий, созданных пользователем с id = %d не может быть получен, т.к. данный пользователь " +

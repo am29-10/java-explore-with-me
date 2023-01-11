@@ -24,10 +24,8 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-
 @SpringBootTest
 public class CategoryServiceTest {
-
     @Autowired
     private CategoryService categoryService;
 

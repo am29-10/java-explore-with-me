@@ -2,6 +2,7 @@ package ru.practicum.ewm.comment.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.comment.dto.CommentDto;
 import ru.practicum.ewm.comment.dto.NewCommentDto;
@@ -9,12 +10,14 @@ import ru.practicum.ewm.comment.mapper.CommentMapper;
 import ru.practicum.ewm.comment.model.Comment;
 import ru.practicum.ewm.comment.service.CommentService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @Slf4j
 @AllArgsConstructor
 @RequestMapping("/users/{userId}/events/{eventId}/comments")
+@Validated
 public class CommentControllerPrivate {
 
     private final CommentService commentService;
@@ -22,7 +25,7 @@ public class CommentControllerPrivate {
     @PostMapping
     public CommentDto create(@PathVariable Long userId,
                              @PathVariable Long eventId,
-                             @RequestBody NewCommentDto newCommentDto) {
+                             @RequestBody @Valid NewCommentDto newCommentDto) {
         log.info("Получен запрос POST users/{}/events/{}/comments", userId, eventId);
         Comment comment = CommentMapper.toComment(newCommentDto);
         return commentService.create(userId, eventId, comment);
@@ -32,7 +35,7 @@ public class CommentControllerPrivate {
     public CommentDto update(@PathVariable Long userId,
                              @PathVariable Long eventId,
                              @PathVariable Long commentId,
-                             @RequestBody NewCommentDto newCommentDto) {
+                             @RequestBody @Valid NewCommentDto newCommentDto) {
         log.info("Получен запрос PATCH users/{}/events/{}/comments/{}", userId, eventId, commentId);
         Comment comment = CommentMapper.toComment(newCommentDto);
         return commentService.update(userId, eventId, commentId, comment);

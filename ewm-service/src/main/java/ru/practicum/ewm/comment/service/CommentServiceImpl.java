@@ -66,10 +66,10 @@ public class CommentServiceImpl implements CommentService {
                 new EntityNotFoundException(String.format("Пользователь с id = %d отсутствует в базе", authorId)));
         commentRepository.findById(commentId).orElseThrow(() ->
                 new EntityNotFoundException(String.format("Комментарий с id = %d отсутствует в базе", commentId)));
-        commentRepository.deleteById(commentId);
         if (!commentId.equals(authorId)) {
             throw new IllegalArgumentException("Нельзя удалить чужой комментарий");
         }
+        commentRepository.deleteById(commentId);
         log.info("Комментарий с id = {} удален", commentId);
     }
 
@@ -104,6 +104,4 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.deleteById(commentId);
         log.info("Комментарий с id = {} удален", commentId);
     }
-
-
 }

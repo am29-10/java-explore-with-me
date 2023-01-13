@@ -1,11 +1,11 @@
 package ru.practicum.ewm.comment.mapper;
 
-import org.springframework.stereotype.Component;
+import lombok.experimental.UtilityClass;
 import ru.practicum.ewm.comment.dto.CommentDto;
 import ru.practicum.ewm.comment.dto.NewCommentDto;
 import ru.practicum.ewm.comment.model.Comment;
 
-@Component
+@UtilityClass
 public class CommentMapper {
     public static Comment toComment(NewCommentDto newCommentDto) {
         return Comment.builder()

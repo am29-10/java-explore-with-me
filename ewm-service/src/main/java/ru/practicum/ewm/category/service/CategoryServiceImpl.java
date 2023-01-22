@@ -19,12 +19,11 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 @Slf4j
+@Transactional
 public class CategoryServiceImpl implements CategoryService {
-
     private final CategoryRepository categoryRepository;
 
     @Override
-    @Transactional
     public CategoryDto create(Category category) {
         if (categoryRepository.findByName(category.getName()).isPresent()) {
             throw new ConflictException(String.format("Категория с названием %s уже есть в базе", category.getName()));
@@ -35,7 +34,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    @Transactional
     public CategoryDto update(Category category) {
         Category updateCategory = categoryRepository.findById(category.getId()).orElseThrow(() ->
                 new EntityNotFoundException(String.format("Категория с id = %d не может быть обновлена, т.к. она " +
@@ -49,7 +47,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    @Transactional
     public List<CategoryDto> getAll(Integer from, Integer size) {
         Pageable pageable = PageRequest.of(from / size, size);
         List<Category> categories = categoryRepository.findAll(pageable).toList();
@@ -60,7 +57,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    @Transactional
     public CategoryDto get(Long categoryId) {
         Category getCategory = categoryRepository.findById(categoryId).orElseThrow(() ->
                 new EntityNotFoundException(String.format("Категория с id = %d не может быть получена, т.к. она " +
@@ -70,7 +66,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    @Transactional
     public void delete(Long categoryId) {
         categoryRepository.findById(categoryId).orElseThrow(() ->
                 new EntityNotFoundException(String.format("Категория с id = %d не может быть удалена, т.к. она " +

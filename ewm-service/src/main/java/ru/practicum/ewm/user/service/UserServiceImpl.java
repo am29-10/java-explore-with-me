@@ -19,11 +19,11 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @AllArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    @Transactional
     public UserDto create(User user) {
         if (userRepository.findByName(user.getName()).isPresent()) {
             throw new ConflictException(String.format("Пользователь с именем %s уже есть в базе", user.getName()));
@@ -34,7 +34,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public UserDto update(Long userId, User user) {
         User updateUser = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(String.format(
                 "Пользователь с id = %d не может быть обновлен, т.к. он отсутствует в базе", userId)));
@@ -48,7 +47,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public List<UserDto> getAll(List<Long> ids, Integer from, Integer size) {
         Pageable pageable = PageRequest.of(from / size, size);
         List<User> users = userRepository.findAllByIdIn(ids, pageable).toList();
@@ -59,7 +57,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public UserDto get(Long userId) {
         User getUser = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(
                 String.format("Пользователь с id = %d не может быть получен, т.к. он отсутствует в базе", userId)));
@@ -69,7 +66,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public void delete(Long userId) {
         userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(
                 String.format("Пользователь с id = %d не может быть удален, т.к. он отсутствует в базе", userId)));

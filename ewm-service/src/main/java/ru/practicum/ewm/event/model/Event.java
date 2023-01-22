@@ -1,8 +1,13 @@
 package ru.practicum.ewm.event.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.Builder;
 import ru.practicum.ewm.category.model.Category;
+import ru.practicum.ewm.comment.model.Comment;
 import ru.practicum.ewm.compilation.model.Compilation;
 import ru.practicum.ewm.event.State;
 import ru.practicum.ewm.location.model.Location;
@@ -65,5 +70,8 @@ public class Event {
     @JsonIgnore
     @OneToMany(mappedBy = "event")
     private List<Request> requests = new ArrayList<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "event")
+    private List<Comment> comments = new ArrayList<>();
 
 }

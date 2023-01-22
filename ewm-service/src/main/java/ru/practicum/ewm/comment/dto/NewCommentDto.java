@@ -1,4 +1,4 @@
-package ru.practicum.ewm.category.dto;
+package ru.practicum.ewm.comment.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class NewCategoryDto {
-    @NotBlank(message = "Название не может быть пустым")
-    private String name;
+public class NewCommentDto {
+    @NotBlank(message = "Комментарий не может быть пустым")
+    private String text;
 }

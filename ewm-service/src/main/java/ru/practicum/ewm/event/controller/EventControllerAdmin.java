@@ -53,5 +53,4 @@ public class EventControllerAdmin {
         log.info("Получен запрос PATCH /admin/events/{}/reject", eventId);
         return eventService.cancel(eventId);
     }
-
 }

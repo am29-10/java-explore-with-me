@@ -21,13 +21,13 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @AllArgsConstructor
+@Transactional
 public class CompilationServiceImpl implements CompilationService {
 
     private final CompilationRepository compilationRepository;
     private final EventRepository eventRepository;
 
     @Override
-    @Transactional
     public CompilationDto create(Compilation compilation) {
         if (compilationRepository.findByTitle(compilation.getTitle()).isPresent()) {
             throw new ConflictException(String.format("Подборка событий с названием %s уже есть в базе",
@@ -43,7 +43,6 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
-    @Transactional
     public void delete(Long compilationId) {
         compilationRepository.findById(compilationId).orElseThrow(() ->
                 new EntityNotFoundException(String.format("Подборка событий с id = %d отсутствует в базе", compilationId)));
@@ -52,7 +51,6 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
-    @Transactional
     public void deleteEventFromCompilation(Long compilationId, Long eventId) {
         Compilation compilation = compilationRepository.findById(compilationId).orElseThrow(() ->
                 new EntityNotFoundException(String.format("Подборка событий с id = %d отсутствует в базе", compilationId)));
@@ -64,7 +62,6 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
-    @Transactional
     public void addEvent(Long compilationId, Long eventId) {
         Compilation compilation = compilationRepository.findById(compilationId).orElseThrow(() ->
                 new EntityNotFoundException(String.format("Подборка событий с id = %d отсутствует в базе", compilationId)));
@@ -79,7 +76,6 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
-    @Transactional
     public void unpinCompilation(Long compilationId) {
         Compilation compilation = compilationRepository.findById(compilationId).orElseThrow(() ->
                 new EntityNotFoundException(String.format("Подборка событий с id = %d отсутствует в базе", compilationId)));
@@ -89,7 +85,6 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
-    @Transactional
     public void pinCompilation(Long compilationId) {
         Compilation compilation = compilationRepository.findById(compilationId).orElseThrow(() ->
                 new EntityNotFoundException(String.format("Подборка событий с id = %d отсутствует в базе", compilationId)));
@@ -99,7 +94,6 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
-    @Transactional
     public List<CompilationDto> getAll(Boolean pinned, Integer from, Integer size) {
         Pageable pageable = PageRequest.of(from / size, size);
         List<Compilation> compilations = compilationRepository.findAllByPinned(pinned, pageable).toList();
@@ -110,7 +104,6 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
-    @Transactional
     public CompilationDto get(Long compilationId) {
         Compilation compilation = compilationRepository.findById(compilationId).orElseThrow(() ->
                 new EntityNotFoundException(String.format("Подборка событий с id = %d отсутствует в базе", compilationId)));

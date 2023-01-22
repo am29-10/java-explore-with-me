@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @AllArgsConstructor
+@Transactional
 public class RequestServiceImpl implements RequestService {
 
     private final RequestRepository requestRepository;
@@ -30,7 +31,6 @@ public class RequestServiceImpl implements RequestService {
     private final EventRepository eventRepository;
 
     @Override
-    @Transactional
     public ParticipationRequestDto create(Long userId, Long eventId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(String.format("Запрос " +
                 "на данное событие не может быть создан, т.к пользователь с id = %d отсутствует в базе", userId)));
@@ -65,7 +65,6 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    @Transactional
     public ParticipationRequestDto cancel(Long userId, Long requestId) {
         userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(String.format("Запрос " +
                 "на данное событие не может быть отменён, т.к пользователь с id = %d отсутствует в базе", userId)));
@@ -82,7 +81,6 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    @Transactional
     public List<ParticipationRequestDto> getAllByUserId(Long userId) {
         userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(String.format("Запрос " +
                 "на данное событие не может быть отменён, т.к пользователь с id = %d отсутствует в базе", userId)));
